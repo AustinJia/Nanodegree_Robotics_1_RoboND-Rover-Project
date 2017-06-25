@@ -28,7 +28,7 @@ def update_rover(Rover, data):
             if np.isfinite(tot_time):
                   Rover.total_time = tot_time
       # Print out the fields in the telemetry data dictionary
-      print(data.keys())
+      # print(data.keys())
       # The current speed of the rover in m/s
       Rover.vel = convert_to_float(data["speed"])
       # The current position of the rover
@@ -50,11 +50,11 @@ def update_rover(Rover, data):
       # Update number of rocks found
       Rover.samples_found = Rover.samples_to_find - np.int(data["sample_count"])
 
-      print('speed =',Rover.vel, 'position =', Rover.pos, 'throttle =', 
-      Rover.throttle, 'steer_angle =', Rover.steer, 'near_sample:', Rover.near_sample, 
-      'picking_up:', data["picking_up"], 'sending pickup:', Rover.send_pickup, 
-      'total time:', Rover.total_time, 'samples remaining:', data["sample_count"], 
-      'samples found:', Rover.samples_found)
+      # print('speed =',Rover.vel, 'position =', Rover.pos, 'throttle =',
+      # Rover.throttle, 'steer_angle =', Rover.steer, 'near_sample:', Rover.near_sample,
+      # 'picking_up:', data["picking_up"], 'sending pickup:', Rover.send_pickup,
+      # 'total time:', Rover.total_time, 'samples remaining:', data["sample_count"],
+      # 'samples found:', Rover.samples_found)
       # Get the current image from the center camera of the rover
       imgString = data["image"]
       image = Image.open(BytesIO(base64.b64decode(imgString)))
@@ -122,6 +122,9 @@ def create_output_images(Rover):
             fidelity = round(100*good_nav_pix/(tot_nav_pix), 1)
       else:
             fidelity = 0
+
+      #add a steer_offset
+      steer_offset = 0
       # Flip the map for plotting so that the y-axis points upward in the display
       map_add = np.flipud(map_add).astype(np.float32)
       # Add some text about map and rock sample detection results
@@ -133,6 +136,22 @@ def create_output_images(Rover):
                   cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
       cv2.putText(map_add,"Rocks: "+str(Rover.samples_found), (0, 55), 
                   cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
+      cv2.putText(map_add,"Act Steer: "+str(np.round(Rover.steer,-1))+",Suggest: "+str(np.round(np.mean(Rover.nav_angles * 180/np.pi)-steer_offset,-1)), (0, 70),
+                  cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
+      cv2.putText(map_add,"Mode: "+str(Rover.mode), (0, 85),
+                  cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
+      cv2.putText(map_add,"Rock dis: "+str(np.round(np.mean(Rover.rock_dists),-1)), (0, 100),
+                  cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
+
+      # # !!!!! add by me
+      # cv2.putText(map_add,"Time: "+str(np.round(Rover.total_time, 1))+' s', (0, 10),
+      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
+      # cv2.putText(map_add,"Mapped: "+str(perc_mapped)+'%', (0, 25),
+      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
+      # cv2.putText(map_add,"Fidelity: "+str(fidelity)+'%', (0, 40),
+      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
+      # cv2.putText(map_add,"Rocks: "+str(Rover.samples_found), (0, 55),
+      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
 
       # Convert map and vision image to base64 strings for sending to server
       pil_img = Image.fromarray(map_add.astype(np.uint8))
@@ -144,6 +163,7 @@ def create_output_images(Rover):
       buff = BytesIO()
       pil_img.save(buff, format="JPEG")
       encoded_string2 = base64.b64encode(buff.getvalue()).decode("utf-8")
+
 
       return encoded_string1, encoded_string2
 

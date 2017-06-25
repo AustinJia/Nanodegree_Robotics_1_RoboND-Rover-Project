@@ -53,29 +53,32 @@ class RoverState():
         self.nav_dists = None # Distances of navigable terrain pixels
         self.ground_truth = ground_truth_3d # Ground truth worldmap
         self.mode = 'forward' # Current mode (can be forward or stop)
-        self.throttle_set = 0.2 # Throttle setting when accelerating
+        self.throttle_set = 0.5 # Throttle setting when accelerating
         self.brake_set = 10 # Brake setting when braking
         # The stop_forward and go_forward fields below represent total count
         # of navigable terrain pixels.  This is a very crude form of knowing
         # when you can keep going and when you should stop.  Feel free to
         # get creative in adding new fields or modifying these!
-        self.stop_forward = 50 # Threshold to initiate stopping
-        self.go_forward = 500 # Threshold to go forward again
+        self.stop_forward = 200 # Threshold to initiate stopping
+        self.go_forward = 1000 # Threshold to go forward again
         self.max_vel = 2 # Maximum velocity (meters/second)
         # Image output from perception step
         # Update this image to display your intermediate analysis steps
         # on screen in autonomous mode
-        self.vision_image = np.zeros((160, 320, 3), dtype=np.float) 
+        self.vision_image = np.zeros((160, 320, 3), dtype=np.float)
         # Worldmap
         # Update this image with the positions of navigable terrain
         # obstacles and rock samples
         self.worldmap = np.zeros((200, 200, 3), dtype=np.float) 
         self.samples_pos = None # To store the actual sample positions
-        self.samples_to_find = 0 # To store the initial count of samples
-        self.samples_found = 0 # To count the number of samples found
+        self.samples_to_find = 0 # To store the initial count of samples, initial as 6
+        self.samples_found = 0 # To count the number of samples found, initial as 0
         self.near_sample = 0 # Will be set to telemetry value data["near_sample"]
         self.picking_up = 0 # Will be set to telemetry value data["picking_up"]
         self.send_pickup = False # Set to True to trigger rock pickup
+        self.stuck_counter = 0 # counts the time of stunk
+        self.xpos_stored = np.array(0.0)
+        self.ypos_stored = np.array(0.0)
 # Initialize our rover 
 Rover = RoverState()
 
@@ -98,7 +101,7 @@ def telemetry(sid, data):
         fps = frame_counter
         frame_counter = 0
         second_counter = time.time()
-    print("Current FPS: {}".format(fps))
+    #print("Current FPS: {}".format(fps))
 
     if data:
         global Rover
@@ -142,7 +145,7 @@ def telemetry(sid, data):
 
 @sio.on('connect')
 def connect(sid, environ):
-    print("connect ", sid)
+    #print("connect ", sid)
     send_control((0, 0, 0), '', '')
     sample_data = {}
     sio.emit(
@@ -187,13 +190,13 @@ if __name__ == '__main__':
     
     #os.system('rm -rf IMG_stream/*')
     if args.image_folder != '':
-        print("Creating image folder at {}".format(args.image_folder))
+        #print("Creating image folder at {}".format(args.image_folder))
         if not os.path.exists(args.image_folder):
             os.makedirs(args.image_folder)
         else:
             shutil.rmtree(args.image_folder)
             os.makedirs(args.image_folder)
-        print("Recording this run ...")
+        #print("Recording this run ...")
     else:
         print("NOT recording this run ...")
     
