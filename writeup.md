@@ -52,7 +52,7 @@ The following image shows the color threshold algorithm to identify terrain, obs
 ![alt text][image5]
 
 The following is a short version of recorded video.
-[![Watch the video](image3)](https://youtu.be/p5N4-tgY06c)
+![Watch the video][YouTube Video](https://youtu.be/p5N4-tgY06c)
 
 ### Autonomous Navigation and Mapping
 
