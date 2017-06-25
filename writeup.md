@@ -22,7 +22,8 @@
 
 [image1]: ./misc/rover_image.jpg
 [image2]: ./calibration_images/example_grid1.jpg
-[image3]: ./calibration_images/example_rock1.jpg
+[image4]: ./calibration_images/youtube_video.jpg
+[image4]: ./calibration_images/example_rock1.jpg
 
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/916/view) Points
@@ -36,8 +37,8 @@
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
 Here is an example of how to include an image in your writeup.
 
-
 ![alt text][image1]
+
 test data provided can be found in :misc/rover_image
 
 I have several recorded image stack in: test_dataset. test_dataset_v1.test_dataset_v2.test_dataset_v3
@@ -46,7 +47,7 @@ I have several recorded image stack in: test_dataset. test_dataset_v1.test_datas
 
 
 ![alt text][image2]
-![alt text](https://youtu.be/p5N4-tgY06c)
+[![Watch the video](image 3)](https://youtu.be/p5N4-tgY06c)
 ### Autonomous Navigation and Mapping
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
@@ -60,6 +61,6 @@ Here I'll talk about the approach I took, what techniques I used, what worked an
 
 
 
-![alt text][image3]
+![alt text][image4]
 
 
