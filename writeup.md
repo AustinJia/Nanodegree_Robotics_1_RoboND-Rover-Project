@@ -21,7 +21,7 @@
 [//]: # (Image References)
 
 [image1]: ./misc/rover_image.jpg
-[image2]: ./output/test_mapping.mp4
+[image2]: ./calibration_images/example_grid1.jpg
 [image3]: ./calibration_images/example_rock1.jpg
 
 
@@ -36,16 +36,17 @@
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
 Here is an example of how to include an image in your writeup.
 
-test data provided can be found in :misc/rover_image
+
 ![alt text][image1]
+test data provided can be found in :misc/rover_image
 
 I have several recorded image stack in: test_dataset. test_dataset_v1.test_dataset_v2.test_dataset_v3
-
 
 #### 1. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
 
 
 ![alt text][image2]
+![alt text](https://youtu.be/p5N4-tgY06c)
 ### Autonomous Navigation and Mapping
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
