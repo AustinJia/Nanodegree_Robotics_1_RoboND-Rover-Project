@@ -29,6 +29,7 @@ def nearby_has_rock(Rover,min):
             return True
     return False
 
+# change the pos to -3 after the rock has been found
 def changeSamples_posToZero(Rover):
     rows = 6
     print("test 02****")
@@ -41,11 +42,6 @@ def changeSamples_posToZero(Rover):
             print("Picked Item ", x)
             break
 
-def pol2cart(rho, phi):
-    x = rho * np.cos(np.rad2deg(phi))
-    y = rho * np.sin(np.rad2deg(phi))
-    return x, y
-
 # Calculate the distance between rover and rock
 def distance_to_rock(Rover):
     if len(Rover.rock_angles) >= 1:
@@ -54,12 +50,6 @@ def distance_to_rock(Rover):
     else:
         return 5000
 
-def distance_of_nav(Rover):
-    if len(Rover.nav_angles) > 1000:
-        x, y = pol2cart(np.mean(Rover.nav_dists),np.mean(Rover.nav_angles))
-        print("x,y:",np.round(x,-1),np.round(y,-1))
-        # return np.sqrt( ((Rover.pos[0] - x)**2) + ((Rover.pos[1] - y)**2))
-        return np.round(x,-1),np.round(y,-1)
 
 # This is where you can build a decision tree for determining throttle, brake and steer 
 # commands based on the output of the perception_step() function
@@ -142,7 +132,7 @@ def decision_step(Rover):
                         # Release the brake to allow turning
                         Rover.brake = 0
                         # Turn range is +/- 15 degrees, when stopped the next line will induce 4-wheel turning
-                        if np.mean(Rover.nav_angles) > 45:
+                        if np.mean(Rover.nav_angles) > 0:
                             Rover.steer = -15 # Could be more clever here about which way to turn
                             print("Turn Right")
                             if Rover.stuck_counter > 300:

@@ -22,8 +22,10 @@
 
 [image1]: ./misc/rover_image.jpg
 [image2]: ./calibration_images/example_grid1.jpg
-[image4]: ./calibration_images/youtube_video.jpg
+[image3]: ./calibration_images/youtube_video.jpg
+[image5]: ./calibration_images/color_threshold_algo.jpg
 [image4]: ./calibration_images/example_rock1.jpg
+[image6]: ./calibration_images/helper_function_01.jpg
 
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/916/view) Points
@@ -46,8 +48,12 @@ I have several recorded image stack in: test_dataset. test_dataset_v1.test_datas
 #### 1. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
 
 
-![alt text][image2]
+The following image shows the color threshold algorithm to identify terrain, obstacles and rock.
+![alt text][image5]
+
+The following is a short version of recorded video.
 [![Watch the video](image 3)](https://youtu.be/p5N4-tgY06c)
+
 ### Autonomous Navigation and Mapping
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
@@ -58,8 +64,21 @@ I have several recorded image stack in: test_dataset. test_dataset_v1.test_datas
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+* I typically running in resolution of 1024 * 768, and good graphic quality setting.
 
+Steps :
+* Have four different mode: forward, stop, stuck and picking.
+* In forward mode, the rover will going forward.  Once rover don't have enough navigated terrain to go or have a mountains in front of the way, it will go to the stop mode.
+* In stop mode, the rover will decrease the speed and yaw, after certain time if yaw doesnot work, it will turn left or right. once navigated terrain larger than certain value, it will go back to the forward mode.
+* Rover will enter stuck mode. if rover's position doesn't move within 100 counter. in stuck mode, rover can turn left or right.
+* Rover will enter stuck mode. if rover see rock or rock exist its surrounding area.
 
+Helper function:
+![alt text][image6]
+* is_clear: check forward clear or not (above image).
+* is_Stuck: check rover stuck or not using timer (stuck_counter).
+* nearby_has_rock: check the surrounding area has rock or not.
+* changeSamples_posToZero: check the position or -3, after the rock has found.
 
 ![alt text][image4]
 
