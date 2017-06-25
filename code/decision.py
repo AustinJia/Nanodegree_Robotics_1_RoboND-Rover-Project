@@ -1,5 +1,14 @@
 import numpy as np
 
+# detect is clear
+# return true when is clear
+def is_clear(Rover):
+    clear = (np.sum(Rover.vision_image[140:150,150:170,2]) >130) & (np.sum(Rover.vision_image[110:120,150:170,2]) >100)
+    if not clear:
+        print("is_clear check 1: ",np.sum(Rover.vision_image[140:150,150:170,2]))
+        print("is_clear check 2: ",np.sum(Rover.vision_image[110:120,150:170,2]))
+    return clear
+
 # detect is struck or not,
 # min: the min length of the Rover.xpos_stored
 # period : the min period between two data
@@ -69,6 +78,7 @@ def decision_step(Rover):
         # Check for Rover.mode status
         if Rover.mode == 'forward':
             print("---------Forward ----------")
+            print("is clear",is_clear(Rover))
             print("# of nav.angles",len(Rover.nav_angles),Rover.samples_found)
             if (len(Rover.rock_angles) >= 2) & (not Rover.picking_up) & (not Rover.send_pickup) :
                 Rover.mode = 'stop'
@@ -98,7 +108,7 @@ def decision_step(Rover):
                 # Set steering to average angle clipped to the range +/- 15
                 Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi), -15, 15)
             # If there's a lack of navigable terrain pixels then go to 'stop' mode
-            elif len(Rover.nav_angles) < Rover.stop_forward:
+            elif (len(Rover.nav_angles) < Rover.stop_forward) | (not is_clear(Rover)):
                 print("case 2: change to stop mode")
                 # Set mode to "stop" and hit the brakes!
                 Rover.throttle = 0
