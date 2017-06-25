@@ -136,22 +136,9 @@ def create_output_images(Rover):
                   cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
       cv2.putText(map_add,"Rocks: "+str(Rover.samples_found), (0, 55), 
                   cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
-      cv2.putText(map_add,"Act Steer: "+str(np.round(Rover.steer,-1))+",Suggest: "+str(np.round(np.mean(Rover.nav_angles * 180/np.pi)-steer_offset,-1)), (0, 70),
-                  cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
       cv2.putText(map_add,"Mode: "+str(Rover.mode), (0, 85),
                   cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
-      cv2.putText(map_add,"Rock dis: "+str(np.round(np.mean(Rover.rock_dists),-1)), (0, 100),
-                  cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
 
-      # # !!!!! add by me
-      # cv2.putText(map_add,"Time: "+str(np.round(Rover.total_time, 1))+' s', (0, 10),
-      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
-      # cv2.putText(map_add,"Mapped: "+str(perc_mapped)+'%', (0, 25),
-      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
-      # cv2.putText(map_add,"Fidelity: "+str(fidelity)+'%', (0, 40),
-      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
-      # cv2.putText(map_add,"Rocks: "+str(Rover.samples_found), (0, 55),
-      #             cv2.FONT_HERSHEY_COMPLEX, 0.6, (255, 255, 255), 1)
 
       # Convert map and vision image to base64 strings for sending to server
       pil_img = Image.fromarray(map_add.astype(np.uint8))

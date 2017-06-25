@@ -80,5 +80,6 @@ Helper function:
 * nearby_has_rock: check the surrounding area has rock or not.
 * changeSamples_posToZero: check the position or -3, after the rock has found.
 
-
+Future Work:
+* Try to improve the fidelity, because I spend lots of time to improve the fidelity rate
 
